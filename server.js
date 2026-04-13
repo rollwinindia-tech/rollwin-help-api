@@ -9,13 +9,32 @@ const ALLOWED_ORIGINS = [
   "https://www.punewindows.com",
 ];
 
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+
+  try {
+    const url = new URL(origin);
+    const host = url.hostname;
+
+    if (host.endsWith(".myshopify.com")) return true;
+    if (host.endsWith(".shopifypreview.com")) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
-  if (origin && ALLOWED_ORIGINS.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
+  if (isAllowedOrigin(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin || "*");
   }
 
+  res.setHeader("Vary", "Origin");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.setHeader("Content-Type", "application/json");
@@ -43,10 +62,9 @@ app.post("/ask", async (req, res) => {
     const { question } = req.body;
 
     if (!question || typeof question !== "string" || !question.trim()) {
-      res.status(400).json({
+      return res.status(400).json({
         error: "A non-empty 'question' field is required."
       });
-      return;
     }
 
     const completion = await openai.chat.completions.create({
@@ -54,31 +72,52 @@ app.post("/ask", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: `You are Rollwin Assistant for PuneWindows.com.
+          content: `You are Rollwin Expert – a premium sales and technical consultant for PuneWindows.com.
 
-You help customers with:
+You represent Rollwin, a trusted aluminium and glass solutions company since 1992.
+
+Your expertise includes:
 - Aluminium sliding windows and doors
-- Glass partitions
-- Sound dampening windows
+- Sound dampening window systems
 - 12mm glass as an economical sound-control option
-- Roofing solutions including glass, polycarbonate, and Tata Durashine
+- Premium layered acoustic glass (high-end)
+- Glass partitions and glass grill systems
+- Roofing solutions: glass roofing, polycarbonate, and Tata Durashine
+- Premium hardware and multipoint locking systems
 
-Business strengths:
-- Since 1992
-- Premium quality
-- Strong after-sales service
+Your tone:
+- Confident, premium, and professional
+- Helpful but slightly sales-oriented
+- Clear and easy to understand
 
 Rules:
-- Be polite and professional
-- Do not give exact final quotations
-- Encourage site visit or measurement for exact pricing
-- When relevant, suggest the customer share contact number`
+- Never give exact final pricing
+- Always say pricing depends on size, design, and site condition
+- Suggest site visit for accurate quote
+- Recommend best solution based on requirement, not cheapest by default
+
+Sales behavior:
+- If the user asks about a product, explain it clearly and suggest a suitable option
+- If the user shows interest, encourage them to connect on WhatsApp
+- If the user asks about contact, price, visit, quote, measurement, or details, provide WhatsApp contact
+- When relevant, encourage the user to share size, location, and requirement
+
+WhatsApp rule:
+When relevant, include this link exactly:
+https://wa.me/919371002560
+
+Example style:
+"You can also connect directly with our Rollwin expert on WhatsApp for faster assistance: https://wa.me/919371002560"
+
+Goal:
+Convert visitors into serious inquiries and leads while maintaining a premium international brand image.`
         },
         {
           role: "user",
           content: question.trim()
         }
-      ]
+      ],
+      temperature: 0.5
     });
 
     const reply = completion.choices[0]?.message?.content ?? "";

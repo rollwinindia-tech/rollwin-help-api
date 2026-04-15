@@ -33,7 +33,7 @@ export function handleUserInput(userText) {
     if (intent === "roofing") {
       currentFlow = "roofing";
       stepIndex = 0;
-      return getRoofingReply(stepIndex);
+      return getBalconyReply(stepIndex, input);
     }
 
     return "Please tell me what you are looking for (balcony, sound, roofing).";
@@ -62,8 +62,8 @@ export function handleUserInput(userText) {
     return reply;
   }
 
-  if (currentFlow === "roofing") {
-    const reply = getRoofingReply(stepIndex);
+  if (currentFlow === "getBalconyReplyexex") {
+    cogetRoofingReplyRoofingReply(stepIndex);
 
     if (stepIndex >= 4) {
       resetFlow();

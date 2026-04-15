@@ -5,13 +5,16 @@ import { rollwinKnowledge } from "./rollwinKnowledge.js";
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Allow your domains
 const ALLOWED_ORIGINS = [
   "https://punewindows.com",
   "https://www.punewindows.com",
 ];
 
+// CORS handling
 function isAllowedOrigin(origin) {
   if (!origin) return true;
+
   if (ALLOWED_ORIGINS.includes(origin)) return true;
 
   try {
@@ -27,6 +30,7 @@ function isAllowedOrigin(origin) {
   }
 }
 
+// Middleware
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -37,7 +41,7 @@ app.use((req, res, next) => {
     res.header("Vary", "Origin");
   }
 
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 
   if (req.method === "OPTIONS") {
@@ -47,52 +51,47 @@ app.use((req, res, next) => {
   next();
 });
 
+
+// ✅ ROOT TEST ROUTE (IMPORTANT)
 app.get("/", (req, res) => {
-  res.json({
-    ok: true,
-    message: "Rollwin Help API is running",
-  });
+  res.send("Rollwin Chatbot API is running 🚀");
 });
 
-app.get("/health", (req, res) => {
-  res.json({
-    ok: true,
-    service: "rollwin-help-api",
-  });
-});
 
-app.get("/knowledge", (req, res) => {
-  res.json({
-    ok: true,
-    knowledge: rollwinKnowledge,
-  });
-});
-
+// ✅ CHATBOT API
 app.post("/chat", (req, res) => {
   try {
-    const userMessage = String(req.body?.message || "").trim();
+    const userMessage = req.body.message || "";
 
     if (!userMessage) {
-      return res.status(400).json({
-        reply: "Please type your requirement so I can guide you.",
+      return res.json({
+        reply: "Please tell me your requirement.",
       });
     }
 
     const botReply = handleUserInput(userMessage);
 
-    return res.json({
+    res.json({
       reply: botReply,
     });
   } catch (error) {
     console.error("Chat error:", error);
 
-    return res.status(500).json({
+    res.json({
       reply:
-        "Something went wrong. Please contact Rollwin on WhatsApp for quick assistance.",
+        "Something went wrong. Please contact Rollwin on WhatsApp.",
     });
   }
 });
 
+
+// Optional: knowledge route
+app.get("/knowledge", (req, res) => {
+  res.json(rollwinKnowledge);
+});
+
+
+// START SERVER
 app.listen(port, () => {
-  console.log(`Rollwin Help API running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });

@@ -43,7 +43,29 @@ app.post("/chat", (req, res) => {
     });
   }
 });
+app.get("/test", (req, res) => {
+  res.send(`
+    <h2>Rollwin Chat Test</h2>
+    <input id="msg" placeholder="Type message" />
+    <button onclick="send()">Send</button>
+    <p id="reply"></p>
 
+    <script>
+      async function send() {
+        const message = document.getElementById("msg").value;
+
+        const res = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        const data = await res.json();
+        document.getElementById("reply").innerText = data.reply;
+      }
+    </script>
+  `);
+});
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

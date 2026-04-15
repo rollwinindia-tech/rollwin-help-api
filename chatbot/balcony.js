@@ -1,49 +1,83 @@
-export function getBalconyReply(stepIndex, userInput = "") {
-  const input = userInput.toLowerCase();
+export const balconySteps = [
+  {
+    key: "purpose",
+    question: "What do you want to use the balcony for? (Office / Extra room / Sitting / Utility)"
+  },
+  {
+    key: "covered",
+    question: "Is your balcony already covered from top? (Yes / No)"
+  },
+  {
+    key: "bottom",
+    question: "What is there at the bottom? (Parapet wall / Glass railing)"
+  },
+  {
+    key: "openingNeed",
+    question: "Do you need more opening space when windows slide? (Yes / No)"
+  },
+  {
+    key: "mosquito",
+    question: "Is mosquito a problem in your area? (Yes / No)"
+  },
+  {
+    key: "category",
+    question: "Which type do you prefer? (Economical / Standard / Premium)"
+  }
+];
 
-  // STEP 0
-  if (stepIndex === 0) {
-    return "What do you want to use the balcony for? (Office / Extra room / Sitting / Utility)";
+export function getBalconyQuestion(stepIndex) {
+  return balconySteps[stepIndex]?.question || null;
+}
+
+export function getBalconyConclusion(answers) {
+  const purpose = String(answers.purpose || "").toLowerCase();
+  const covered = String(answers.covered || "").toLowerCase();
+  const bottom = String(answers.bottom || "").toLowerCase();
+  const openingNeed = String(answers.openingNeed || "").toLowerCase();
+  const mosquito = String(answers.mosquito || "").toLowerCase();
+  const category = String(answers.category || "").toLowerCase();
+
+  const lines = [];
+
+  if (covered.includes("no")) {
+    lines.push("Since the balcony is not covered from top, roofing plus enclosure may both be required.");
+  } else {
+    lines.push("Since the balcony is already covered, we can focus on the enclosure system directly.");
   }
 
-  // STEP 1
-  if (stepIndex === 1) {
-    return "Is your balcony already covered from top? (Yes / No)";
+  if (bottom.includes("parapet")) {
+    lines.push("A sliding window system is generally very suitable on a parapet wall balcony.");
+  } else if (bottom.includes("glass") || bottom.includes("railing")) {
+    lines.push("With railing-type balconies, exact support and fixing details matter, so photo-based guidance is better.");
   }
 
-  // STEP 2
-  if (stepIndex === 2) {
-    return "What is there at the bottom? (Parapet wall / Glass railing)";
+  if (openingNeed.includes("yes")) {
+    lines.push("For better opening space, 3-track or 4-track options are usually recommended.");
+  } else {
+    lines.push("If maximum opening is not necessary, 2-track or 3-track can be practical depending on size.");
   }
 
-  // STEP 3
-  if (stepIndex === 3) {
-    return "Do you need more opening space when windows slide? (Yes / No)";
+  if (mosquito.includes("yes")) {
+    lines.push("For mosquito protection, Brazilian sliding net is practical, while folding net is a more space-saving premium option.");
+  } else {
+    lines.push("Without mosquito requirement, full glass shutter arrangement can give a cleaner look.");
   }
 
-  // STEP 4 → SMART LOGIC
-  if (stepIndex === 4) {
-    if (input.includes("yes")) {
-      return "In that case, 3-track or 4-track sliding windows are recommended. They give 66% to 75% opening which is ideal for space usage.";
-    } else {
-      return "2-track or 3-track windows will work well and are more economical options.";
-    }
+  if (category.includes("econom")) {
+    lines.push("Economical category usually suits budget-focused balcony closure.");
+  } else if (category.includes("standard")) {
+    lines.push("Standard category gives a stronger and better-balanced solution.");
+  } else if (category.includes("premium")) {
+    lines.push("Premium category is ideal when look, smoother operation, and stronger finish matter more.");
   }
 
-  // STEP 5
-  if (stepIndex === 5) {
-    return "Is mosquito a problem in your area? (Yes / No)";
+  if (purpose.includes("office")) {
+    lines.push("For office use, comfort, daylight control, and practical opening selection become important.");
+  } else if (purpose.includes("extra room")) {
+    lines.push("For extra room use, enclosure quality and comfort matter more than just basic closure.");
   }
 
-  // STEP 6 → SMART LOGIC
-  if (stepIndex === 6) {
-    if (input.includes("yes")) {
-      return "We recommend Brazilian sliding mosquito net or premium folding net. Folding net saves space but is slightly premium.";
-    } else {
-      return "Then we can go with full glass shutters for maximum opening and clean look.";
-    }
-  }
+  lines.push("For exact recommendation based on size and site condition, please share a photo or connect on WhatsApp.");
 
-  // FINAL STEP → SALES CLOSE
-  return "We have completed many balcony enclosures since 1992 with excellent results. Would you like site visit, estimate or connect on WhatsApp?";
+  return lines.join(" ");
 }

@@ -1,77 +1,87 @@
 import { detectIntent } from "./intents.js";
-import { getBalconyReply } from "./balcony.js";
-import { getSoundReply } from "./sound.js";
-import { getRoofingReply } from "./roofing.js";
+import {
+  balconySteps,
+  getBalconyQuestion,
+  getBalconyConclusion
+} from "./balcony.js";
+import {
+  soundSteps,
+  getSoundIntro,
+  getSoundQuestion,
+  getSoundConclusion
+} from "./sound.js";
+import {
+  roofingSteps,
+  getRoofingQuestion,
+  getRoofingConclusion
+} from "./roofing.js";
 
-let currentFlow = null;
-let stepIndex = 0;
+const flowMap = {
+  balcony: {
+    steps: balconySteps,
+    getQuestion: getBalconyQuestion,
+    getConclusion: getBalconyConclusion
+  },
+  sound: {
+    steps: soundSteps,
+    getQuestion: getSoundQuestion,
+    getConclusion: getSoundConclusion,
+    getIntro: getSoundIntro
+  },
+  roofing: {
+    steps: roofingSteps,
+    getQuestion: getRoofingQuestion,
+    getConclusion: getRoofingConclusion
+  }
+};
 
-function resetFlow() {
-  currentFlow = null;
-  stepIndex = 0;
+export function resetSessionState(session) {
+  session.currentFlow = null;
+  session.stepIndex = 0;
+  session.answers = {};
 }
 
-export function handleUserInput(userText) {
-  const input = String(userText || "").trim();
+export function handleUserInput({ session, message, forcedIntent = null }) {
+  const input = String(message || "").trim();
 
-  // FIRST MESSAGE → detect intent
-  if (!currentFlow) {
-    const intent = detectIntent(input);
-
-    if (intent === "balcony") {
-      currentFlow = "balcony";
-      stepIndex = 0;
-      return getBalconyReply(stepIndex);
-    }
-
-    if (intent === "sound") {
-      currentFlow = "sound";
-      stepIndex = 0;
-      return getSoundReply(stepIndex);
-    }
-
-    if (intent === "roofing") {
-      currentFlow = "roofing";
-      stepIndex = 0;
-      return getBalconyReply(stepIndex, input);
-    }
-
-    return "Please tell me what you are looking for (balcony, sound, roofing).";
+  if (!input) {
+    return "Please tell me your requirement.";
   }
 
-  // CONTINUE FLOW
-  stepIndex++;
+  // Start new flow
+  if (!session.currentFlow) {
+    const intent = forcedIntent || detectIntent(input);
 
-  if (currentFlow === "balcony") {
-    const reply = getBalconyReply(stepIndex);
-
-    if (stepIndex >= 6) {
-      resetFlow();
+    if (!flowMap[intent]) {
+      return "Please tell me whether you need balcony enclosure, sound dampening, or roofing guidance.";
     }
 
-    return reply;
+    session.currentFlow = intent;
+    session.stepIndex = 0;
+    session.answers = {};
+
+    const intro = flowMap[intent].getIntro?.(0);
+    if (intro) return intro;
+
+    return flowMap[intent].getQuestion(0);
   }
 
-  if (currentFlow === "sound") {
-    const reply = getSoundReply(stepIndex);
+  const flow = flowMap[session.currentFlow];
+  const currentStep = flow.steps[session.stepIndex];
 
-    if (stepIndex >= 4) {
-      resetFlow();
-    }
-
-    return reply;
+  if (!currentStep) {
+    resetSessionState(session);
+    return "Please start again with your requirement.";
   }
 
-  if (currentFlow === "getBalconyReplyexex") {
-    cogetRoofingReplyRoofingReply(stepIndex);
+  session.answers[currentStep.key] = input;
+  session.stepIndex += 1;
 
-    if (stepIndex >= 4) {
-      resetFlow();
-    }
-
-    return reply;
+  if (session.stepIndex < flow.steps.length) {
+    return flow.getQuestion(session.stepIndex);
   }
 
-  resetFlow();
-  return "Please share more details or connect on WhatsApp.";
+  const reply = flow.getConclusion(session.answers);
+  resetSessionState(session);
+  return reply;
 }

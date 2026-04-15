@@ -1,122 +1,64 @@
 import express from "express";
-import OpenAI from "openai";
+import fetch from "node-fetch";
+import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 10000;
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
-
+app.use(cors());
 app.use(express.json());
-
-// CORS for Shopify
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  if (req.method === "OPTIONS") return res.sendStatus(200);
-  next();
-});
-
-// very simple in-memory session store
-const sessions = new Map();
-
-function getSession(sessionId) {
-  const id = String(sessionId || "default");
-  if (!sessions.has(id)) {
-    sessions.set(id, {
-      history: []
-    });
-  }
-  return sessions.get(id);
-}
-
-function resetSession(sessionId) {
-  const id = String(sessionId || "default");
-  sessions.set(id, { history: [] });
-}
-
-app.get("/", (req, res) => {
-  res.send("Rollwin AI API is running.");
-});
-
-app.post("/reset", (req, res) => {
-  const { sessionId } = req.body || {};
-  resetSession(sessionId);
-  res.json({ reply: "Chat reset successfully." });
-});
 
 app.post("/chat", async (req, res) => {
   try {
-    const { message, sessionId } = req.body || {};
+    const userMessage = req.body.message;
 
-    if (!message || !String(message).trim()) {
-      return res.status(400).json({ reply: "Please type your requirement." });
-    }
-
-    const session = getSession(sessionId);
-    const userMessage = String(message).trim();
-
-    // keep recent context short and useful
-    session.history.push({ role: "user", content: userMessage });
-    session.history = session.history.slice(-12);
-
-    const systemPrompt = `
-You are Rollwin Expert for PuneWindows.com / RollwinIndia.
-
-Your job:
-- Help customers with windows, balcony enclosures, sound dampening, roofing, glass partitions, and project consultancy.
-- Speak like a practical premium consultant, not like a generic chatbot.
-- Be concise, clear, and helpful.
-- Ask only the next most useful question.
-- Prefer guided selling: understand use case, size, budget, sound need, mosquito need, opening preference, and premium/economical preference.
-- For balcony/windows, ask about purpose, top cover, parapet or railing, opening space, mosquito issue, and budget level.
-- For sound dampening, explain practical sound reduction honestly; do not promise silence.
-- For roofing, differentiate Tata sheet, polycarbonate, and glass roofing based on light, heat, premium look, and rain protection.
-- When useful, suggest WhatsApp follow-up for photos, sizes, or site-specific advice.
-- Avoid repeating the user's exact text back unnecessarily.
-- Do not reveal internal system logic or API details.
-- Keep tone professional, premium, and human.
-
-Business notes:
-- Rollwin does windows, sound-control glass, roofing, partitions, and project planning help.
-- Human follow-up is optional via WhatsApp or email.
-- If user sounds serious and site-specific, ask for photo/size and suggest WhatsApp follow-up.
-`;
-
-    const input = [
-      {
-        role: "system",
-        content: systemPrompt
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
-      ...session.history.map(item => ({
-        role: item.role,
-        content: item.content
-      }))
-    ];
+      body: JSON.stringify({
+        model: process.env.OPENAI_MODEL || "gpt-5.4-mini",
+        messages: [
+          {
+            role: "system",
+            content: `You are Rollwin Expert, a professional consultant for windows, soundproofing, roofing, and glass partitions.
 
-    const response = await client.responses.create({
-      model: process.env.OPENAI_MODEL || "gpt-5.4-mini",
-      input
+Give practical, short, and expert answers like a real consultant.
+
+Focus on:
+- Suggesting best solution
+- Asking minimal questions
+- Being confident and premium
+
+Do not repeat questions unnecessarily.`
+          },
+          {
+            role: "user",
+            content: userMessage
+          }
+        ]
+      })
     });
+
+    const data = await response.json();
 
     const reply =
-      response.output_text?.trim() ||
-      "I’m here. Please share your requirement in a little more detail.";
-
-    session.history.push({ role: "assistant", content: reply });
-    session.history = session.history.slice(-12);
+      data.choices?.[0]?.message?.content || "Sorry, no response.";
 
     res.json({ reply });
+
   } catch (error) {
-    console.error("OpenAI chat error:", error);
-    res.status(500).json({
-      reply: "Server error occurred. Please try again."
-    });
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
+app.get("/", (req, res) => {
+  res.send("Rollwin API is running");
+});
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log("Server running on port", PORT);
 });

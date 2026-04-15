@@ -1,10 +1,11 @@
 export function detectIntent(text) {
-  const input = text.toLowerCase();
+  const input = String(text || "").toLowerCase();
 
   if (
     input.includes("balcony") ||
-    input.includes("enclose balcony") ||
-    input.includes("balcony enclosure")
+    input.includes("enclosure") ||
+    input.includes("mosquito") ||
+    input.includes("sliding window")
   ) {
     return "balcony";
   }
@@ -13,7 +14,8 @@ export function detectIntent(text) {
     input.includes("sound") ||
     input.includes("noise") ||
     input.includes("soundproof") ||
-    input.includes("sound dampening")
+    input.includes("sound damp") ||
+    input.includes("acoustic")
   ) {
     return "sound";
   }
@@ -21,9 +23,11 @@ export function detectIntent(text) {
   if (
     input.includes("roof") ||
     input.includes("roofing") ||
-    input.includes("terrace cover") ||
+    input.includes("terrace") ||
     input.includes("polycarbonate") ||
-    input.includes("glass roof")
+    input.includes("durashine") ||
+    input.includes("glass roofing") ||
+    input.includes("tata sheet")
   ) {
     return "roofing";
   }

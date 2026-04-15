@@ -1,80 +1,79 @@
 import { detectIntent } from "./intents.js";
+import { getBalconyReply } from "./balcony.js";
+import { getSoundReply } from "./sound.js";
+import { getRoofingReply } from "./roofing.js";
 
 let currentFlow = null;
 let stepIndex = 0;
 
+function resetFlow() {
+  currentFlow = null;
+  stepIndex = 0;
+}
+
 export function handleUserInput(userText) {
-  // First message → detect intent
+  const input = String(userText || "").trim();
+
+  if (!input) {
+    return "Please tell me what you need help with, like balcony enclosure, sound reduction, or roofing.";
+  }
+
   if (!currentFlow) {
-    const intent = detectIntent(userText);
+    const intent = detectIntent(input);
 
     if (intent === "balcony") {
       currentFlow = "balcony";
       stepIndex = 0;
-      return "What do you want to use the balcony for? (Office / Extra room / Sitting / Utility)";
+      return getBalconyReply(stepIndex);
     }
 
     if (intent === "sound") {
       currentFlow = "sound";
       stepIndex = 0;
-      return "What is the main reason for sound reduction? (Baby / Exams / Traffic / Construction)";
+      return getSoundReply(stepIndex);
     }
 
     if (intent === "roofing") {
       currentFlow = "roofing";
       stepIndex = 0;
-      return "Where do you need roofing? (Balcony / Terrace / Top floor)";
+      return getRoofingReply(stepIndex);
     }
 
-    return "Please tell me what you are looking for (balcony, sound, roofing, etc.)";
+    return "Please tell me what you are looking for: balcony enclosure, sound reduction, or roofing.";
   }
-app.get("/", (req, res) => {
-  res.send("Rollwin Chatbot API is running 🚀");
-});
-  // Continue conversation
-  stepIndex++;
+
+  stepIndex += 1;
 
   if (currentFlow === "balcony") {
-    const steps = [
-      "Is your balcony already covered from the top? (Yes / No)",
-      "What is there on bottom? (Parapet / Railing)",
-      "Do you want more opening space? (Yes / No)",
-      "Do you need mosquito protection? (Yes / No)",
-      "Which type? (Economical / Premium)"
-    ];
+    const reply = getBalconyReply(stepIndex);
 
-    if (stepIndex < steps.length) {
-      return steps[stepIndex];
+    if (stepIndex >= 6) {
+      resetFlow();
     }
+
+    return reply;
   }
 
   if (currentFlow === "sound") {
-    const steps = [
-      "Do you already have windows? (Yes / No)",
-      "We provide strong sound dampening using thick processed glass with premium sealing.",
-      "Would you like to visit demo or see videos?"
-    ];
+    const reply = getSoundReply(stepIndex);
 
-    if (stepIndex < steps.length) {
-      return steps[stepIndex];
+    if (stepIndex >= 4) {
+      resetFlow();
     }
+
+    return reply;
   }
 
   if (currentFlow === "roofing") {
-    const steps = [
-      "What is your requirement? (Rain protection / Light / Premium look)",
-      "We provide Tata sheet, Polycarbonate and Glass roofing.",
-      "Would you like estimate or talk to expert?"
-    ];
+    const reply = getRoofingReply(stepIndex);
 
-    if (stepIndex < steps.length) {
-      return steps[stepIndex];
+    if (stepIndex >= 4) {
+      resetFlow();
     }
+
+    return reply;
   }
 
-  // Reset
-  currentFlow = null;
-  stepIndex = 0;
-
-  return "For exact guidance, please connect with Rollwin expert on WhatsApp.";
+  resetFlow();
+  return "Please tell me your requirement again, like balcony enclosure, sound reduction, or roofing.";
 }

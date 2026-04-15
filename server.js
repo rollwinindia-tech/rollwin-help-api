@@ -1,4 +1,5 @@
-import express from "express";
+import { handleUserInput } from "./chatbot/main.js";
+importt express from "express";
 import OpenAI from "openai";
 import { rollwinKnowledge } from "./rollwinKnowledge.js";
 

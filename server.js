@@ -1,71 +1,44 @@
 import express from "express";
+import cors from "cors";
 import { handleUserInput } from "./chatbot/main.js";
-import { rollwinKnowledge } from "./rollwinKnowledge.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+
+// ✅ VERY IMPORTANT: allow Shopify domain
+app.use(cors({
+  origin: "*", // (we can restrict later to punewindows.com)
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
 
 app.use(express.json());
 
+// Health check
 app.get("/", (req, res) => {
-  res.send("Rollwin Chatbot API is running");
+  res.send("Rollwin API is running 🚀");
 });
 
-app.get("/health", (req, res) => {
-  res.json({
-    ok: true
-  });
-});
-
-app.get("/knowledge", (req, res) => {
-  res.json(rollwinKnowledge);
-});
-
+// Chat endpoint
 app.post("/chat", (req, res) => {
   try {
-    const userMessage = req.body?.message || "";
+    const { message } = req.body;
 
-    if (!userMessage) {
-      return res.json({
-        reply: "Please tell me your requirement."
-      });
+    if (!message) {
+      return res.status(400).json({ reply: "No message received." });
     }
 
-    const botReply = handleUserInput(userMessage);
+    const reply = handleUserInput(message);
 
-    return res.json({
-      reply: botReply
-    });
+    res.json({ reply });
   } catch (error) {
-    console.error("Chat error:", error);
-    return res.status(500).json({
-      reply: "Something went wrong. Please contact Rollwin on WhatsApp."
-    });
+    console.error(error);
+    res.status(500).json({ reply: "Server error occurred." });
   }
 });
-app.get("/test", (req, res) => {
-  res.send(`
-    <h2>Rollwin Chat Test</h2>
-    <input id="msg" placeholder="Type message" />
-    <button onclick="send()">Send</button>
-    <p id="reply"></p>
 
-    <script>
-      async function send() {
-        const message = document.getElementById("msg").value;
+// Render uses PORT
+const PORT = process.env.PORT || 10000;
 
-        const res = await fetch("/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message })
-        });
-
-        const data = await res.json();
-        document.getElementById("reply").innerText = data.reply;
-      }
-    </script>
-  `);
-});
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

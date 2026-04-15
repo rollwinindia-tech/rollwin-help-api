@@ -28,7 +28,9 @@ export function handleUserInput(userText) {
 
     return "Please tell me what you are looking for (balcony, sound, roofing, etc.)";
   }
-
+app.get("/", (req, res) => {
+  res.send("Rollwin Chatbot API is running 🚀");
+});
   // Continue conversation
   stepIndex++;
 

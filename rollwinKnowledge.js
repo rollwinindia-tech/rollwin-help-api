@@ -68,6 +68,16 @@ DOORS AND SYSTEMS
 - Glass grill sliding systems
 - Mosquito net integration
 
+GENERAL WINDOW GLASS SELECTION
+- For normal everyday sliding windows, include 4 mm plain clear glass as the basic practical option.
+- If the customer wants less glare or less direct sunlight, suggest tinted glass or filmed glass.
+- Do not present only sound-control glass when the user asks a general "which glass is good" question.
+- Explain choices in this order when relevant:
+  1. 4 mm plain clear glass = basic normal-use option
+  2. Tinted or filmed glass = better for glare, sunlight, and privacy preference
+  3. 12 mm glass = economical sound-control option
+  4. Layered acoustic glass = premium sound-control option
+
 SOUND CONTROL KNOWLEDGE
 - 12 mm glass = economical sound-control option
 - Layered acoustic glass = stronger premium solution

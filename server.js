@@ -61,6 +61,7 @@ Reply rules:
 - Never repeat a question already answered in recent conversation.
 - If the user gives a short option like "yes", "premium", "traffic", or "terrace", infer context from conversation history and continue.
 - Give practical recommendations in economical, optimum, and premium terms when useful.
+- For general glass-choice questions, include 4 mm plain clear glass first, then tinted/filmed glass for less glare, then 12 mm and layered acoustic glass only if sound control matters.
 - Never give exact final pricing. Say final pricing depends on size, design, section, glass, hardware, site condition, and installation.
 - Do not push WhatsApp early. Mention WhatsApp or site visit only when the user asks for quotation, measurement, follow-up, human help, or exact final recommendation.
 - If WhatsApp is mentioned, say human replies may take more time than this chat.
@@ -73,6 +74,9 @@ ${rollwinKnowledge}`;
 }
 function fallbackReply(message, intentContext) {
   const input = `${intentContext} ${message}`.toLowerCase();
+  if (input.includes("glass")) {
+    return "For a normal sliding window, 4 mm plain clear glass is the basic practical option. If you want less glare or less direct sunlight, choose tinted glass or filmed glass. If sound reduction is important, 12 mm glass is the economical sound-control option. For stronger premium noise control, layered acoustic glass is better. Final selection still depends on shutter size, wind exposure, section strength, and budget.";
+  }
   if (input.includes("sound") || input.includes("noise")) {
     return "For sound reduction, the right solution is usually acoustic glass with strong sealing, not only thicker glass. Economical option can be 12 mm glass where budget matters. Optimum option is better section plus acoustic laminated glass. Premium option is layered acoustic glass with very careful sealing. Complete silence is not practical, but strong noticeable reduction is possible. One useful detail: is the noise mainly traffic, construction, or general outside sound?";
   }

@@ -29,7 +29,7 @@ export function getRoofingConclusion(answers) {
   } else if (preference.includes("poly")) {
     lines.push("Polycarbonate roofing is a balanced option when you want natural light with budget control and lighter structure than glass.");
   } else if (preference.includes("glass")) {
-    lines.push("Glass roofing is the premium option for maximum daylight, luxury look, and open-sky feel, but slope, sealing, support, heat, and glass choice must be planned properly.");
+    lines.push("Glass roofing is the premium option for daylight and open-sky feel, but it must be engineered with proper support, slope, glass spacing, pressure tapes, premium weather-grade silicone, and movement-friendly joints.");
   } else {
     lines.push("We can guide between Tata sheet, polycarbonate, and premium glass roofing depending on light, heat, rain protection, look, structure, and budget.");
   }
@@ -44,6 +44,10 @@ export function getRoofingConclusion(answers) {
 
   if (requirement.includes("rain")) {
     lines.push("For rain splash or balcony mess, roofing plus correct slope and sealing is more important than only choosing the sheet material.");
+  }
+
+  if (requirement.includes("leak") || requirement.includes("water")) {
+    lines.push("A real Rollwin lesson from a leaking glass roof: repeated top-side silicone patching failed because the original roof lacked proper double-grid framework, spacing, pressure tapes, and thermal-movement planning. Once the engineering and sealing system were corrected, the roof stayed dry through monsoons.");
   }
 
   if (location.includes("balcony") || location.includes("terrace")) {

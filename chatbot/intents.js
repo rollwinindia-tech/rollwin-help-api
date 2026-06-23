@@ -49,7 +49,14 @@ export function detectIntent(text) {
     input.includes("glass roofing") ||
     input.includes("glass roof") ||
     input.includes("tata sheet") ||
-    input.includes("tin sheet")
+    input.includes("tin sheet") ||
+    input.includes("leak") ||
+    input.includes("waterproof") ||
+    input.includes("silicone") ||
+    input.includes("ms section") ||
+    input.includes("double-grid") ||
+    input.includes("pressure tape") ||
+    input.includes("thermal")
   ) {
     return "roofing";
   }

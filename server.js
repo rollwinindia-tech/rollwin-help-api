@@ -78,6 +78,7 @@ Reply rules:
 - If the customer mentions high floor, wind, rattling, or builder windows, include the true anonymized 22nd-floor Elegance Series story.
 - If the customer mentions newborn, baby, night trucks, or sleep disturbance, include the true anonymized cost-saver extra-thick glass sound story.
 - If the customer mentions local sliding windows, direct labor, poor bearings, hard sliding, glass coming loose, side play, safety concern, Eco Series, or push-pull handles, include the true anonymized local-labor Eco Series safety story.
+- If the customer mentions leaking glass roof, monsoon leakage, silicone patching, MS sections, double-grid framework, pressure tapes, or thermal expansion, include the true anonymized leaking glass roof engineering story.
 - For general glass-choice questions, include 4 mm plain clear glass first, then tinted/filmed glass for less glare, then 12 mm and layered acoustic glass only if sound control matters.
 - Never give exact final pricing. Say final pricing depends on size, design, section, glass, hardware, site condition, and installation.
 - Do not push WhatsApp early. Mention WhatsApp or site visit only when the user asks for quotation, measurement, follow-up, human help, or exact final recommendation.
@@ -126,6 +127,13 @@ function storyReply(message) {
   const localLaborIssue =
     (input.includes("local") || input.includes("direct labor")) &&
     (input.includes("bearing") || input.includes("hard sliding") || input.includes("glass came") || input.includes("glass panel") || input.includes("side play"));
+  const leakingRoofIssue =
+    (input.includes("glass roof") || input.includes("roof")) &&
+    (input.includes("leak") || input.includes("monsoon") || input.includes("silicone") || input.includes("ms section") || input.includes("double-grid") || input.includes("pressure tape") || input.includes("thermal"));
+
+  if (leakingRoofIssue) {
+    return "For a leaking glass roof, repeated silicone patching from the top is usually temporary if the engineering below is wrong. One real Rollwin example: a Pune-area homeowner had a glass roof that leaked every monsoon for years. Rollwin found the roof was fixed directly on MS sections without a proper double-grid aluminium framework, used local silicone, had no pressure tapes, had poor glass spacing, and did not account for thermal expansion between glass, steel, and aluminium. We rebuilt the sealing approach with a proper double-grid framework, correct spacing, premium weather-grade silicone, pressure tapes, and joints designed for movement. The roof stayed dry through multiple monsoons. The lesson is simple: a glass roof is not just glass on steel; lasting waterproofing depends on structure, spacing, sealing system, pressure management, and material quality.";
+  }
 
   if (!localLaborIssue) return "";
 

@@ -75,6 +75,8 @@ Reply rules:
 - If the user gives a short option like "yes", "premium", "traffic", or "terrace", infer context from conversation history and continue.
 - Give practical recommendations in economical, optimum, and premium terms when useful.
 - Occasionally use a short field-experience story when it clearly helps the customer decide. Real Rollwin stories may be described as anonymized examples; invented situations must be framed as "for example" and not as real testimonials.
+- If the customer mentions high floor, wind, rattling, or builder windows, include the true anonymized 22nd-floor Elegance Series story.
+- If the customer mentions newborn, baby, night trucks, or sleep disturbance, include the true anonymized cost-saver extra-thick glass sound story.
 - For general glass-choice questions, include 4 mm plain clear glass first, then tinted/filmed glass for less glare, then 12 mm and layered acoustic glass only if sound control matters.
 - Never give exact final pricing. Say final pricing depends on size, design, section, glass, hardware, site condition, and installation.
 - Do not push WhatsApp early. Mention WhatsApp or site visit only when the user asks for quotation, measurement, follow-up, human help, or exact final recommendation.
@@ -94,6 +96,12 @@ function fallbackReply(message, intentContext) {
   }
   if (input.includes("upvc")) {
     return "For Indian conditions, Rollwin generally recommends aluminium over uPVC. Aluminium is stronger, more stable in heat and monsoon, better for large or heavy shutters, supports toughened or acoustic glass better, gives slimmer premium profiles, and has scrap value. uPVC can look economical initially, but heat expansion, yellowing, warping, weaker security, and lower suitability for heavy glass are common concerns.";
+  }
+  if (input.includes("rattl") || input.includes("wind") || input.includes("builder")) {
+    return "For high-floor wind rattling, weak builder windows usually need stronger sections, better rollers, proper locking, and tighter sealing. One real Rollwin example: a customer on the 22nd floor had builder-provided windows rattling heavily in wind. After installing Rollwin Elegance Series windows with stronger sections and proper sealing, the rattling stopped. For this type of issue, Wide32 may work for moderate cases, but Elegance or deeper heavy-duty systems are the better direction for strong wind exposure.";
+  }
+  if (input.includes("baby") || input.includes("newborn") || input.includes("truck")) {
+    return "For night truck noise with a newborn baby, start with practical sound control instead of blindly choosing the most expensive glass. One real Rollwin example: a family had heavy night-time street and truck noise after a newborn arrived, and Rollwin suggested a cost-saver extra-thick glass option. The baby started sleeping better, and the customer's wife thanked Rollwin many times. Complete silence is not practical, but 12 mm or extra-thick glass with strong sealing can give noticeable relief.";
   }
   if (input.includes("glass")) {
     return "For a normal sliding window, 4 mm plain clear glass is the basic practical option. If you want less glare or less direct sunlight, choose tinted glass or filmed glass. If sound reduction is important, 12 mm glass is the economical sound-control option. For stronger premium noise control, layered acoustic glass is better. Final selection still depends on shutter size, wind exposure, section strength, and budget.";

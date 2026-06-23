@@ -20,7 +20,14 @@ export function detectIntent(text) {
     input.includes("hard sliding") ||
     input.includes("side play") ||
     input.includes("glass came") ||
-    input.includes("push-pull")
+    input.includes("push-pull") ||
+    input.includes("upvc") ||
+    input.includes("u pvc") ||
+    input.includes("plastic section") ||
+    input.includes("jammed shutter") ||
+    input.includes("sliding door jam") ||
+    input.includes("glass displacement") ||
+    input.includes("heat expansion")
   ) {
     return "balcony";
   }

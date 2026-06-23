@@ -79,6 +79,7 @@ Reply rules:
 - If the customer mentions newborn, baby, night trucks, or sleep disturbance, include the true anonymized cost-saver extra-thick glass sound story.
 - If the customer mentions local sliding windows, direct labor, poor bearings, hard sliding, glass coming loose, side play, safety concern, Eco Series, or push-pull handles, include the true anonymized local-labor Eco Series safety story.
 - If the customer mentions leaking glass roof, monsoon leakage, silicone patching, MS sections, double-grid framework, pressure tapes, or thermal expansion, include the true anonymized leaking glass roof engineering story.
+- If the customer mentions cheap uPVC, heat expansion, plastic sections, jamming, cracks, direct sunlight, large uPVC sliding doors, glass displacement, or aluminium vs uPVC, include the true anonymized cheap uPVC sliding door heat story.
 - For general glass-choice questions, include 4 mm plain clear glass first, then tinted/filmed glass for less glare, then 12 mm and layered acoustic glass only if sound control matters.
 - Never give exact final pricing. Say final pricing depends on size, design, section, glass, hardware, site condition, and installation.
 - Do not push WhatsApp early. Mention WhatsApp or site visit only when the user asks for quotation, measurement, follow-up, human help, or exact final recommendation.
@@ -130,9 +131,15 @@ function storyReply(message) {
   const leakingRoofIssue =
     (input.includes("glass roof") || input.includes("roof")) &&
     (input.includes("leak") || input.includes("monsoon") || input.includes("silicone") || input.includes("ms section") || input.includes("double-grid") || input.includes("pressure tape") || input.includes("thermal"));
+  const upvcHeatIssue =
+    (input.includes("upvc") || input.includes("u pvc") || input.includes("plastic")) &&
+    (input.includes("heat") || input.includes("summer") || input.includes("sun") || input.includes("jam") || input.includes("hard") || input.includes("crack") || input.includes("glass") || input.includes("sliding"));
 
   if (leakingRoofIssue) {
     return "For a leaking glass roof, repeated silicone patching from the top is usually temporary if the engineering below is wrong. One real Rollwin example: a Pune-area homeowner had a glass roof that leaked every monsoon for years. Rollwin found the roof was fixed directly on MS sections without a proper double-grid aluminium framework, used local silicone, had no pressure tapes, had poor glass spacing, and did not account for thermal expansion between glass, steel, and aluminium. We rebuilt the sealing approach with a proper double-grid framework, correct spacing, premium weather-grade silicone, pressure tapes, and joints designed for movement. The roof stayed dry through multiple monsoons. The lesson is simple: a glass roof is not just glass on steel; lasting waterproofing depends on structure, spacing, sealing system, pressure management, and material quality.";
+  }
+  if (upvcHeatIssue) {
+    return "This is a common reason Rollwin recommends aluminium over uPVC for large exposed sliding doors. One real Rollwin example: a Pune family installed low-cost uPVC sliding doors after being told all windows were the same. After summer heat and direct sunlight, the plastic shutters expanded slightly, sliding became hard, locks misaligned, cracks appeared near stressed areas, and one forced operation caused the glass holding to partly fail. Rollwin replaced the unsuitable system with a heavy-duty aluminium sliding door using precision sections, quality bearings, proper glass retention, premium gaskets, and robust push-pull handles. More than five years later, the doors still slide smoothly. The lesson is that a window or door is judged after years of heat, rain, daily use, and weather changes, not only on installation day.";
   }
 
   if (!localLaborIssue) return "";

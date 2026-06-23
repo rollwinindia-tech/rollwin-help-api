@@ -121,7 +121,20 @@ function fallbackReply(message, intentContext) {
   }
   return "For Rollwin windows, the practical choice depends on use and budget. Eco Series is economical for basic everyday use. Wide 32 is a stronger balanced option with better appearance. Elegance Series is the premium heavy-duty choice for homes where finish and durability matter more. Glass, section, hardware, sealing, and site condition all affect the final recommendation. Tell me the opening type or room, and I can suggest the best category.";
 }
+function storyReply(message) {
+  const input = String(message || "").toLowerCase();
+  const localLaborIssue =
+    (input.includes("local") || input.includes("direct labor")) &&
+    (input.includes("bearing") || input.includes("hard sliding") || input.includes("glass came") || input.includes("glass panel") || input.includes("side play"));
+
+  if (!localLaborIssue) return "";
+
+  return "This is a safety issue, so avoid using that shutter until it is checked. One real Rollwin example: a customer installed local sliding windows through direct labor to save money, but soon the shutters rattled, bearings wore out, sliding became hard, side play increased, and one glass panel partly came out because the glass holding was weak. Rollwin replaced the problematic shutters with Eco Series sliding windows using premium push-pull handles, quality bearings, proper glass gaskets, and precision sections. The result was smooth, quiet, secure operation, and the customer later said he wished he had chosen quality windows from the beginning. In your case, the practical next step is inspection of bearings, shutter section rigidity, glass retention, track clearance, locks, and handles before deciding repair versus replacement.";
+}
 async function getExpertReply({ session, message, intentContext }) {
+  const directStory = storyReply(message);
+  if (directStory) return directStory;
+
   if (!process.env.OPENAI_API_KEY) {
     return fallbackReply(message, intentContext);
   }

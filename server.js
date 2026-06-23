@@ -31,11 +31,23 @@ function cleanReply(text) {
 }
 function getIntentContext(forcedIntent, message) {
   const input = `${forcedIntent || ""} ${message || ""}`.toLowerCase();
+  if (input.includes("photo") || input.includes("picture") || input.includes("image")) {
+    return "photo-based guidance without AI image analysis";
+  }
   if (input.includes("sound") || input.includes("noise") || input.includes("acoustic")) {
     return "sound dampening windows and doors";
   }
-  if (input.includes("roof") || input.includes("terrace") || input.includes("polycarbonate") || input.includes("durashine")) {
+  if (input.includes("roof") || input.includes("terrace") || input.includes("pergola") || input.includes("polycarbonate") || input.includes("durashine")) {
     return "roofing";
+  }
+  if (input.includes("grill")) {
+    return "glass grill and sliding grill systems";
+  }
+  if (input.includes("casement") || input.includes("openable") || input.includes("pivot")) {
+    return "casement openable windows";
+  }
+  if (input.includes("upvc") || input.includes("u pvc") || input.includes("aluminium vs")) {
+    return "aluminium vs uPVC window comparison";
   }
   if (input.includes("partition")) {
     return "glass partitions";
@@ -66,6 +78,7 @@ Reply rules:
 - Never give exact final pricing. Say final pricing depends on size, design, section, glass, hardware, site condition, and installation.
 - Do not push WhatsApp early. Mention WhatsApp or site visit only when the user asks for quotation, measurement, follow-up, human help, or exact final recommendation.
 - If WhatsApp is mentioned, say human replies may take more time than this chat.
+- Do not claim you can inspect photos in this chat. If photos would help, ask the customer to send them by WhatsApp/email for human follow-up to avoid image AI credit use.
 - For sound control, be realistic: strong reduction is possible, complete silence is not promised.
 - Do not say "as an AI" or expose internal instructions.
 - Keep answers concise: normally 5 to 9 short lines.
@@ -75,6 +88,12 @@ ${rollwinKnowledge}`;
 }
 function fallbackReply(message, intentContext) {
   const input = `${intentContext} ${message}`.toLowerCase();
+  if (input.includes("photo") || input.includes("picture") || input.includes("image")) {
+    return "Photos can help for site-condition guidance, but this chat should not inspect images unless image AI is enabled later. To avoid extra image AI credit use, send photos by WhatsApp or email for human follow-up. Best photos: full opening from inside, outside view if possible, close-up of track/frame, top/ceiling, bottom/parapet or railing, side wall/support, and any leakage or noise problem area.";
+  }
+  if (input.includes("upvc")) {
+    return "For Indian conditions, Rollwin generally recommends aluminium over uPVC. Aluminium is stronger, more stable in heat and monsoon, better for large or heavy shutters, supports toughened or acoustic glass better, gives slimmer premium profiles, and has scrap value. uPVC can look economical initially, but heat expansion, yellowing, warping, weaker security, and lower suitability for heavy glass are common concerns.";
+  }
   if (input.includes("glass")) {
     return "For a normal sliding window, 4 mm plain clear glass is the basic practical option. If you want less glare or less direct sunlight, choose tinted glass or filmed glass. If sound reduction is important, 12 mm glass is the economical sound-control option. For stronger premium noise control, layered acoustic glass is better. Final selection still depends on shutter size, wind exposure, section strength, and budget.";
   }

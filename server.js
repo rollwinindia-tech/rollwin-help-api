@@ -57,6 +57,7 @@ Current user context: ${intentContext}
 
 Reply rules:
 - Answer the user's latest question directly first.
+- Use broad practical expertise when helpful, but Rollwin website and business knowledge overrides general assumptions.
 - Do not run a long questionnaire; ask at most one follow-up only when truly needed.
 - Never repeat a question already answered in recent conversation.
 - If the user gives a short option like "yes", "premium", "traffic", or "terrace", infer context from conversation history and continue.

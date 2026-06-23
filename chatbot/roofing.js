@@ -27,7 +27,8 @@ export function getRoofingConclusion(answers) {
   if (preference.includes("tata")) {
     lines.push("Tata sheet roofing is the practical economical option for strong utility and rain protection, but it will not give the open premium daylight feel of glass.");
   } else if (preference.includes("poly")) {
-    lines.push("Polycarbonate roofing is a balanced option when you want natural light with budget control and lighter structure than glass.");
+    lines.push("Polycarbonate roofing is a balanced option when you want rain protection, useful natural light, budget control, and lighter structure than glass.");
+    lines.push("For polycarbonate, sheet quality, thickness, slope, fixing, support spacing, and edge sealing matter a lot. Heat, glare, rain noise, and long-term clarity depend on the grade and installation.");
   } else if (preference.includes("glass")) {
     lines.push("Glass roofing is the premium option for daylight and open-sky feel, but it must be engineered with proper support, slope, glass spacing, pressure tapes, premium weather-grade silicone, and movement-friendly joints.");
   } else {

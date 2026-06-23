@@ -74,6 +74,8 @@ Reply rules:
 - Never repeat a question already answered in recent conversation.
 - If the user gives a short option like "yes", "premium", "traffic", or "terrace", infer context from conversation history and continue.
 - Give practical recommendations in economical, optimum, and premium terms when useful.
+- If the user asks about one specific product or option, answer that option directly first and do not list all alternatives unless comparison is requested.
+- If the user asks for polycarbonate roofing, answer specifically about polycarbonate roofing: rain protection, natural light, budget control, lighter structure than glass, heat/glare/rain-noise tradeoffs, slope, fixing, sheet quality, and support spacing.
 - Occasionally use a short field-experience story when it clearly helps the customer decide. Real Rollwin stories may be described as anonymized examples; invented situations must be framed as "for example" and not as real testimonials.
 - If the customer mentions high floor, wind, rattling, or builder windows, include the true anonymized 22nd-floor Elegance Series story.
 - If the customer mentions newborn, baby, night trucks, or sleep disturbance, include the true anonymized cost-saver extra-thick glass sound story.
@@ -99,6 +101,9 @@ function fallbackReply(message, intentContext) {
   }
   if (input.includes("upvc")) {
     return "For Indian conditions, Rollwin generally recommends aluminium over uPVC. Aluminium is stronger, more stable in heat and monsoon, better for large or heavy shutters, supports toughened or acoustic glass better, gives slimmer premium profiles, and has scrap value. uPVC can look economical initially, but heat expansion, yellowing, warping, weaker security, and lower suitability for heavy glass are common concerns.";
+  }
+  if (input.includes("polycarbonate")) {
+    return "Polycarbonate roofing is a practical budget-friendly option when you want rain protection with some natural light and a lighter structure than glass roofing. It works well for balconies, terraces, utility areas, and open spaces where function matters more than a premium glass-roof look. The important points are sheet quality and thickness, correct slope, proper fixing, support spacing, and edge sealing. It can still allow heat and glare depending on sheet type, and rain noise/long-term clarity depend on material quality and installation. For exact advice, share approximate width x length, whether it gets direct sun, and whether your main need is rain protection, light, or heat reduction.";
   }
   if (input.includes("direct labor") || input.includes("local") || input.includes("bearing") || input.includes("hard sliding") || input.includes("side play") || input.includes("glass came") || input.includes("push-pull") || input.includes("eco series")) {
     return "This is where window quality really matters. One real Rollwin example: a customer had installed local sliding windows through direct labor to save money, but soon the shutters rattled, the bearings wore out, sliding became hard, and one glass panel partly came out because the glass holding was weak. Rollwin replaced the problematic shutters with Eco Series sliding windows using premium push-pull handles, quality bearings, proper glass gaskets, and precision sections. The result was smooth, quiet, secure operation, and the customer later said he wished he had chosen quality windows from the beginning.";

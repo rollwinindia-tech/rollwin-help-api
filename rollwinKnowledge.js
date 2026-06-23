@@ -75,6 +75,7 @@ PRODUCT LINE DETAIL FROM WEBSITE
 - Glass partitions: use fixed, sliding, or sliding-plus-fixed layouts for kitchen/living separation, room dividers, office cabins, study areas, dressing/privacy areas, and modern interiors while preserving light and openness.
 - Glass roofs and pergolas: premium glass roofs use structural support, correct slope, industrial-grade sealing, double-grid type framework, and suitable glass choice for safety, heat, rain noise, privacy, and waterproofing.
 - Glass roof options: toughened safety glass for strength, heat-reflective or UV film for heat/UV control, laminated/acoustic glass for rain-noise control and safety retention, tinted glass for glare/privacy, and polycarbonate or Tata sheet where budget/utility matters more than premium glass look.
+- Polycarbonate roofing: answer specifically about polycarbonate when requested; do not list glass roofing and Tata sheet unless the customer asks for comparison. Explain that polycarbonate is useful when the customer wants budget control, rain protection, some natural light, and lighter structure than glass. Mention tradeoffs: less premium look than glass, heat/glare can still matter, sheet quality and thickness matter, slope and fixing must be correct, and rain noise/long-term clarity depend on material quality and installation.
 - Sound dampening: focus on airtight sealing, frame strength, glass mass/layering, track seals, gaskets, silicone joints, and installation quality. Never promise total silence.
 
 PHOTO GUIDANCE WITHOUT EXTRA AI IMAGE CREDITS
@@ -174,6 +175,9 @@ ROOFING KNOWLEDGE
 2. Polycarbonate roofing
 - Budget-friendly
 - Practical weather protection
+- Allows useful natural light compared with opaque sheet roofing
+- Good where glass roofing is too premium or heavy for the budget/structure
+- Needs correct slope, fixing, edge sealing, sheet thickness, and support spacing
 
 3. Tata Durashine roofing
 - Strong and durable sheet roofing

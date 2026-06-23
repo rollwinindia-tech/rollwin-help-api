@@ -2,6 +2,26 @@ export function detectIntent(text) {
   const input = String(text || "").toLowerCase();
 
   if (
+    input.includes("partition") ||
+    input.includes("office cabin") ||
+    input.includes("room divider") ||
+    input.includes("frosted glass") ||
+    input.includes("privacy glass")
+  ) {
+    return "partitions";
+  }
+
+  if (
+    input.includes("consultancy") ||
+    input.includes("project planning") ||
+    input.includes("budget planning") ||
+    input.includes("optimum size") ||
+    input.includes("whole project")
+  ) {
+    return "consultancy";
+  }
+
+  if (
     input.includes("balcony") ||
     input.includes("enclosure") ||
     input.includes("mosquito") ||

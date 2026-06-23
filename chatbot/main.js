@@ -15,6 +15,16 @@ import {
   getRoofingQuestion,
   getRoofingConclusion
 } from "./roofing.js";
+import {
+  partitionSteps,
+  getPartitionQuestion,
+  getPartitionConclusion
+} from "./partitions.js";
+import {
+  consultancySteps,
+  getConsultancyQuestion,
+  getConsultancyConclusion
+} from "./consultancy.js";
 
 const flowMap = {
   balcony: {
@@ -32,6 +42,16 @@ const flowMap = {
     steps: roofingSteps,
     getQuestion: getRoofingQuestion,
     getConclusion: getRoofingConclusion
+  },
+  partitions: {
+    steps: partitionSteps,
+    getQuestion: getPartitionQuestion,
+    getConclusion: getPartitionConclusion
+  },
+  consultancy: {
+    steps: consultancySteps,
+    getQuestion: getConsultancyQuestion,
+    getConclusion: getConsultancyConclusion
   }
 };
 

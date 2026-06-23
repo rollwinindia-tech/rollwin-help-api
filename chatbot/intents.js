@@ -13,7 +13,14 @@ export function detectIntent(text) {
     input.includes("slim32") ||
     input.includes("builder window") ||
     input.includes("rattl") ||
-    input.includes("wind")
+    input.includes("wind") ||
+    input.includes("direct labor") ||
+    input.includes("local window") ||
+    input.includes("bearing") ||
+    input.includes("hard sliding") ||
+    input.includes("side play") ||
+    input.includes("glass came") ||
+    input.includes("push-pull")
   ) {
     return "balcony";
   }

@@ -77,6 +77,7 @@ Reply rules:
 - Occasionally use a short field-experience story when it clearly helps the customer decide. Real Rollwin stories may be described as anonymized examples; invented situations must be framed as "for example" and not as real testimonials.
 - If the customer mentions high floor, wind, rattling, or builder windows, include the true anonymized 22nd-floor Elegance Series story.
 - If the customer mentions newborn, baby, night trucks, or sleep disturbance, include the true anonymized cost-saver extra-thick glass sound story.
+- If the customer mentions local sliding windows, direct labor, poor bearings, hard sliding, glass coming loose, side play, safety concern, Eco Series, or push-pull handles, include the true anonymized local-labor Eco Series safety story.
 - For general glass-choice questions, include 4 mm plain clear glass first, then tinted/filmed glass for less glare, then 12 mm and layered acoustic glass only if sound control matters.
 - Never give exact final pricing. Say final pricing depends on size, design, section, glass, hardware, site condition, and installation.
 - Do not push WhatsApp early. Mention WhatsApp or site visit only when the user asks for quotation, measurement, follow-up, human help, or exact final recommendation.
@@ -96,6 +97,9 @@ function fallbackReply(message, intentContext) {
   }
   if (input.includes("upvc")) {
     return "For Indian conditions, Rollwin generally recommends aluminium over uPVC. Aluminium is stronger, more stable in heat and monsoon, better for large or heavy shutters, supports toughened or acoustic glass better, gives slimmer premium profiles, and has scrap value. uPVC can look economical initially, but heat expansion, yellowing, warping, weaker security, and lower suitability for heavy glass are common concerns.";
+  }
+  if (input.includes("direct labor") || input.includes("local") || input.includes("bearing") || input.includes("hard sliding") || input.includes("side play") || input.includes("glass came") || input.includes("push-pull") || input.includes("eco series")) {
+    return "This is where window quality really matters. One real Rollwin example: a customer had installed local sliding windows through direct labor to save money, but soon the shutters rattled, the bearings wore out, sliding became hard, and one glass panel partly came out because the glass holding was weak. Rollwin replaced the problematic shutters with Eco Series sliding windows using premium push-pull handles, quality bearings, proper glass gaskets, and precision sections. The result was smooth, quiet, secure operation, and the customer later said he wished he had chosen quality windows from the beginning.";
   }
   if (input.includes("rattl") || input.includes("wind") || input.includes("builder")) {
     return "For high-floor wind rattling, weak builder windows usually need stronger sections, better rollers, proper locking, and tighter sealing. One real Rollwin example: a customer on the 22nd floor had builder-provided windows rattling heavily in wind. After installing Rollwin Elegance Series windows with stronger sections and proper sealing, the rattling stopped. For this type of issue, Wide32 may work for moderate cases, but Elegance or deeper heavy-duty systems are the better direction for strong wind exposure.";

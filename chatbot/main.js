@@ -53,7 +53,7 @@ export function handleUserInput({ session, message, forcedIntent = null }) {
     const intent = forcedIntent || detectIntent(input);
 
     if (!flowMap[intent]) {
-      return "Please tell me whether you need balcony enclosure, sound dampening, or roofing guidance.";
+      return "Please tell me whether you need guidance for windows, balcony enclosure, sound dampening, roofing, glass partitions, glass grill, or project planning.";
     }
 
     session.currentFlow = intent;

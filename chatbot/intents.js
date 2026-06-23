@@ -5,7 +5,15 @@ export function detectIntent(text) {
     input.includes("balcony") ||
     input.includes("enclosure") ||
     input.includes("mosquito") ||
-    input.includes("sliding window")
+    input.includes("sliding window") ||
+    input.includes("sliding door") ||
+    input.includes("grill") ||
+    input.includes("elegance") ||
+    input.includes("wide32") ||
+    input.includes("slim32") ||
+    input.includes("builder window") ||
+    input.includes("rattl") ||
+    input.includes("wind")
   ) {
     return "balcony";
   }
@@ -15,7 +23,11 @@ export function detectIntent(text) {
     input.includes("noise") ||
     input.includes("soundproof") ||
     input.includes("sound damp") ||
-    input.includes("acoustic")
+    input.includes("acoustic") ||
+    input.includes("truck") ||
+    input.includes("newborn") ||
+    input.includes("baby") ||
+    input.includes("traffic")
   ) {
     return "sound";
   }
@@ -24,10 +36,13 @@ export function detectIntent(text) {
     input.includes("roof") ||
     input.includes("roofing") ||
     input.includes("terrace") ||
+    input.includes("pergola") ||
     input.includes("polycarbonate") ||
     input.includes("durashine") ||
     input.includes("glass roofing") ||
-    input.includes("tata sheet")
+    input.includes("glass roof") ||
+    input.includes("tata sheet") ||
+    input.includes("tin sheet")
   ) {
     return "roofing";
   }

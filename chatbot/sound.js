@@ -39,7 +39,7 @@ export function getSoundConclusion(answers) {
 
   const lines = [];
 
-  lines.push("We provide strong sound dampening solutions using thick processed solid glass with premium sealing.");
+  lines.push("For sound dampening, glass alone is not enough. The practical result comes from extra-thick or layered glass, stronger sections, proper gaskets, track sealing, and careful installation.");
 
   if (existingWindows.includes("yes")) {
     lines.push("Since windows already exist, site condition and current gap control matter a lot.");
@@ -47,13 +47,10 @@ export function getSoundConclusion(answers) {
     lines.push("Since windows are not yet installed, we can guide the full system more effectively from the beginning.");
   }
 
-  if (
-    reason.includes("baby") ||
-    reason.includes("exam") ||
-    reason.includes("construction") ||
-    reason.includes("traffic")
-  ) {
-    lines.push("This is exactly the kind of real-life requirement for which customers approach us for sound dampening guidance.");
+  if (reason.includes("baby") || reason.includes("newborn") || reason.includes("truck")) {
+    lines.push("One real Rollwin example: a family had heavy night-time street and truck noise after a newborn arrived. We suggested a cost-saver extra-thick glass option, and the baby started sleeping better.");
+  } else if (reason.includes("exam") || reason.includes("construction") || reason.includes("traffic")) {
+    lines.push("For this type of disturbance, 12 mm glass is the economical sound-control option, while layered acoustic glass is the premium stronger option.");
   }
 
   lines.push("Complete silence is not practical, but strong and noticeable sound reduction can be achieved with the right system.");

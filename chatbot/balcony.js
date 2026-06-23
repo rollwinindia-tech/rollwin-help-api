@@ -38,23 +38,24 @@ export function getBalconyConclusion(answers) {
   const category = String(answers.category || "").toLowerCase();
 
   const lines = [];
+  lines.push("For balcony enclosure, the right system depends on rain protection, wind load, opening space, mosquito control, and how you want to use the balcony.");
 
   if (covered.includes("no")) {
-    lines.push("Since the balcony is not covered from top, roofing plus enclosure may both be required.");
+    lines.push("Since the balcony is not covered from top, plan roofing first and then the sliding enclosure, otherwise rain control and sealing will remain weak.");
   } else {
-    lines.push("Since the balcony is already covered, we can focus on the enclosure system directly.");
+    lines.push("Since the balcony is already covered, we can focus mainly on the sliding enclosure, sealing, and track arrangement.");
   }
 
   if (bottom.includes("parapet")) {
-    lines.push("A sliding window system is generally very suitable on a parapet wall balcony.");
+    lines.push("On a parapet wall, a sliding window system is usually practical and stable.");
   } else if (bottom.includes("glass") || bottom.includes("railing")) {
-    lines.push("With railing-type balconies, exact support and fixing details matter, so photo-based guidance is better.");
+    lines.push("With glass railing or open railing, fixing support becomes more important, so photos and measurements are needed before final advice.");
   }
 
   if (openingNeed.includes("yes")) {
-    lines.push("For better opening space, 3-track or 4-track options are usually recommended.");
+    lines.push("For more usable opening, 3-track or 4-track is better than a simple 2-track system.");
   } else {
-    lines.push("If maximum opening is not necessary, 2-track or 3-track can be practical depending on size.");
+    lines.push("If maximum opening is not necessary, 2-track or 3-track can be enough depending on size and wind exposure.");
   }
 
   if (mosquito.includes("yes")) {
@@ -64,11 +65,11 @@ export function getBalconyConclusion(answers) {
   }
 
   if (category.includes("econom")) {
-    lines.push("Economical category usually suits budget-focused balcony closure.");
+    lines.push("Economical choice: Eco/Slim type sections for normal-use balcony closure.");
   } else if (category.includes("standard")) {
-    lines.push("Standard category gives a stronger and better-balanced solution.");
+    lines.push("Optimum choice: Wide32 gives a stronger, better-looking balanced solution.");
   } else if (category.includes("premium")) {
-    lines.push("Premium category is ideal when look, smoother operation, and stronger finish matter more.");
+    lines.push("Premium choice: Elegance/deeper systems are better when wind, height, smoothness, and finish matter more.");
   }
 
   if (purpose.includes("office")) {
@@ -77,7 +78,7 @@ export function getBalconyConclusion(answers) {
     lines.push("For extra room use, enclosure quality and comfort matter more than just basic closure.");
   }
 
-  lines.push("For exact recommendation based on size and site condition, please share a photo or connect on WhatsApp.");
+  lines.push("For exact recommendation, share width x height plus photos of the full opening, top cover, bottom/parapet or railing, and side support.");
 
   return lines.join(" ");
 }

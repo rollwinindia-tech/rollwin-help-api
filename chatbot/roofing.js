@@ -25,17 +25,17 @@ export function getRoofingConclusion(answers) {
   const lines = [];
 
   if (preference.includes("tata")) {
-    lines.push("Tata sheet roofing is the more economical practical option for strong weather protection.");
+    lines.push("Tata sheet roofing is the practical economical option for strong utility and rain protection, but it will not give the open premium daylight feel of glass.");
   } else if (preference.includes("poly")) {
-    lines.push("Polycarbonate roofing is a good balance when natural light is needed with better comfort than metal sheet.");
+    lines.push("Polycarbonate roofing is a balanced option when you want natural light with budget control and lighter structure than glass.");
   } else if (preference.includes("glass")) {
-    lines.push("Glass roofing is the premium option for maximum light, luxury look, and open-sky feel.");
+    lines.push("Glass roofing is the premium option for maximum daylight, luxury look, and open-sky feel, but slope, sealing, support, heat, and glass choice must be planned properly.");
   } else {
-    lines.push("We provide Tata sheet, polycarbonate, and premium glass roofing depending on your need and budget.");
+    lines.push("We can guide between Tata sheet, polycarbonate, and premium glass roofing depending on light, heat, rain protection, look, structure, and budget.");
   }
 
   if (requirement.includes("light")) {
-    lines.push("Since natural light is important, polycarbonate or glass roofing usually becomes more suitable than solid sheet roofing.");
+    lines.push("For example, many homes replace dark tin-sheet areas because natural light is blocked; polycarbonate or glass can bring daylight back while still giving rain protection.");
   }
 
   if (requirement.includes("premium")) {
@@ -43,15 +43,14 @@ export function getRoofingConclusion(answers) {
   }
 
   if (requirement.includes("rain")) {
-    lines.push("For direct rain protection, all three systems can work, but cost and appearance differ significantly.");
+    lines.push("For rain splash or balcony mess, roofing plus correct slope and sealing is more important than only choosing the sheet material.");
   }
 
   if (location.includes("balcony") || location.includes("terrace")) {
     lines.push("Balcony and terrace roofing are among the most common practical use cases for these systems.");
   }
 
-  lines.push("Roofing work is generally considered for total areas around 100 sq.ft. or more.");
-  lines.push("For exact suggestion, please share size and photos on WhatsApp.");
+  lines.push("For exact suggestion, share approximate width x length and photos of the top, side support, wall junction, and rain-entry area.");
 
   return lines.join(" ");
 }

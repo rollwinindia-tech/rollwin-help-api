@@ -5,16 +5,31 @@ import { rollwinKnowledge } from "./rollwinKnowledge.js";
 const app = express();
 const sessions = new Map();
 const MAX_HISTORY_MESSAGES = 30; // 15 user/assistant turns.
+const DAILY_QUESTION_LIMIT = 10;
+const PRODUCT_TERMS = [
+  "window", "door", "aluminium", "aluminum", "glass", "roof", "pergola", "sliding",
+  "sound", "noise", "grill", "partition", "warranty", "service", "installation",
+  "site", "visit", "balcony", "terrace", "hardware", "track", "upvc", "casement",
+  "mesh", "frame", "section", "profile", "elegance", "wide32", "eco", "rollwin"
+];
+const UNRELATED_TERMS = [
+  "stock market", "share market", "nse", "sensex", "bank nifty", "trading",
+  "cricket", "football", "recipe", "movie", "politics", "election", "homework",
+  "python", "javascript", "weather"
+];
 
 app.use(cors());
 app.use(express.json());
 function getSession(sessionId) {
   const key = String(sessionId || "default").trim().slice(0, 120) || "default";
+  const day = new Date().toISOString().slice(0, 10);
   if (!sessions.has(key)) {
     if (sessions.size > 200) sessions.delete(sessions.keys().next().value);
-    sessions.set(key, { history: [] });
+    sessions.set(key, { history: [], day, count: 0, offTopic: 0 });
   }
-  return sessions.get(key);
+  const session = sessions.get(key);
+  if (session.day !== day) Object.assign(session, { history: [], day, count: 0, offTopic: 0 });
+  return session;
 }
 function remember(session, role, content) {
   const text = String(content || "").trim().slice(0, 2000);
@@ -29,6 +44,28 @@ function cleanReply(text) {
     .replace(/\*/g, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
+}
+function isClearlyUnrelated(message) {
+  const input = String(message || "").toLowerCase();
+  return UNRELATED_TERMS.some((term) => input.includes(term)) &&
+    !PRODUCT_TERMS.some((term) => input.includes(term));
+}
+async function moderationFlagged(text) {
+  if (!process.env.OPENAI_API_KEY) return false;
+  try {
+    const response = await fetch("https://api.openai.com/v1/moderations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({ model: "omni-moderation-latest", input: String(text || "").slice(0, 8000) })
+    });
+    const data = await response.json().catch(() => ({}));
+    return response.ok && data.results?.[0]?.flagged === true;
+  } catch {
+    return false;
+  }
 }
 function getIntentContext(forcedIntent, message) {
   const input = `${forcedIntent || ""} ${message || ""}`.toLowerCase();
@@ -198,7 +235,9 @@ async function getExpertReply({ session, message, intentContext }) {
       "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
     },
     body: JSON.stringify({
-      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      model: process.env.OPENAI_MODEL || "gpt-5.6-terra",
+      max_completion_tokens: 1200,
+      reasoning_effort: "low",
       messages: [
         {
           role: "system",
@@ -219,7 +258,10 @@ async function getExpertReply({ session, message, intentContext }) {
     console.error("OpenAI API error", response.status, data);
     return fallbackReply(message, intentContext);
   }
-  return cleanReply(data.choices?.[0]?.message?.content) || fallbackReply(message, intentContext);
+  const reply = cleanReply(data.choices?.[0]?.message?.content) || fallbackReply(message, intentContext);
+  return await moderationFlagged(reply)
+    ? "I cannot provide that response. Please ask a practical question about Rollwin windows, doors, roofing, installation or site visits."
+    : reply;
 }
 
 app.post("/chat", async (req, res) => {
@@ -231,6 +273,24 @@ app.post("/chat", async (req, res) => {
     }
 
     const session = getSession(req.body.sessionId);
+    if (isClearlyUnrelated(userMessage)) {
+      session.offTopic += 1;
+      const reply = session.offTopic >= 2
+        ? "Rollwin Expert is paused for unrelated questions. Start again and ask only about windows, doors, roofing, installation, warranty or site visits."
+        : "I can help only with Rollwin products and related project guidance.";
+      return res.json({ reply, remaining: Math.max(0, DAILY_QUESTION_LIMIT - session.count) });
+    }
+    if (session.offTopic >= 2) {
+      return res.json({ reply: "Rollwin Expert is paused for unrelated questions. Use Start again to continue.", remaining: Math.max(0, DAILY_QUESTION_LIMIT - session.count) });
+    }
+    session.offTopic = 0;
+    if (session.count >= DAILY_QUESTION_LIMIT) {
+      return res.json({ reply: "Daily Expert quota is finished for today. Please continue on WhatsApp for urgent help.", remaining: 0 });
+    }
+    if (await moderationFlagged(userMessage)) {
+      return res.json({ reply: "I cannot help with that request. Please ask about Rollwin windows, doors, roofing, installation or site visits.", remaining: Math.max(0, DAILY_QUESTION_LIMIT - session.count) });
+    }
+    session.count += 1;
     const intentContext = getIntentContext(req.body.forcedIntent, userMessage);
     const reply = await getExpertReply({
       session,
@@ -241,7 +301,7 @@ app.post("/chat", async (req, res) => {
     remember(session, "user", userMessage);
     remember(session, "assistant", reply);
 
-    res.json({ reply });
+    res.json({ reply, remaining: Math.max(0, DAILY_QUESTION_LIMIT - session.count) });
 
   } catch (error) {
     console.error(error);
@@ -252,11 +312,15 @@ app.post("/chat", async (req, res) => {
 app.post("/reset", (req, res) => {
   const session = getSession(req.body?.sessionId);
   session.history = [];
+  session.offTopic = 0;
   res.json({ ok: true });
 });
 
 app.get("/", (req, res) => {
   res.send("Rollwin API is running");
+});
+app.get("/healthz", (req, res) => {
+  res.json({ ok: true, service: "rollwin-expert" });
 });
 
 const PORT = process.env.PORT || 3000;

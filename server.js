@@ -62,8 +62,12 @@ async function moderationFlagged(text) {
       body: JSON.stringify({ model: "omni-moderation-latest", input: String(text || "").slice(0, 8000) })
     });
     const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      console.error("OpenAI moderation error", response.status, data?.error?.code || data?.error?.type || "unknown");
+    }
     return response.ok && data.results?.[0]?.flagged === true;
-  } catch {
+  } catch (error) {
+    console.error("OpenAI moderation request failed", error?.name || "unknown");
     return false;
   }
 }
@@ -258,6 +262,7 @@ async function getExpertReply({ session, message, intentContext }) {
     console.error("OpenAI API error", response.status, data);
     return fallbackReply(message, intentContext);
   }
+  console.log("OpenAI completion succeeded", data.model || process.env.OPENAI_MODEL || "unknown");
   const reply = cleanReply(data.choices?.[0]?.message?.content) || fallbackReply(message, intentContext);
   return await moderationFlagged(reply)
     ? "I cannot provide that response. Please ask a practical question about Rollwin windows, doors, roofing, installation or site visits."
@@ -326,4 +331,5 @@ app.get("/healthz", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
+  console.log("OpenAI configured", Boolean(process.env.OPENAI_API_KEY), "model", process.env.OPENAI_MODEL || "gpt-5.6-terra");
 });
